@@ -6,12 +6,30 @@ import turndownPluginGfm from 'turndown-plugin-gfm'
 import path from 'path';
 import { URL } from 'url';
 import {
-    TARGET_DIR,
+    TARGET_DIR
+  } from "./properties.js";
+import {
+    FILE_NAME,
     SAVE_DIR,
     HTML_URL,
-    BRANCH_NAME
+    DESCRIPTION
   } from "./target.js";
+
+
+  const FRONT_MATTER = `---
+  title: ${HTML_URL.split(":").reverse()[0]}
+  linkTitle: ${HTML_URL.split(":").reverse()[0]}
+  description: "${DESCRIPTION}"
+  url: ${SAVE_DIR}/${FILE_NAME}
+  menu:
+    depth:
+      weight: ${SAVE_DIR.split("/").length-1 }
+      parent: ${SAVE_DIR.split("/").reverse()[0]}
+      identifier: ${FILE_NAME}
+  ---
   
+  `;
+
 
 async function fetchHtml(url) {
     try {
@@ -26,15 +44,31 @@ async function fetchHtml(url) {
 
 async function saveMarkdownToFile(filePath, content) {
     try {
-        const dir = path.dirname(filePath);
-        await fs.mkdir(dir, { recursive: true });
-             
-        await fs.writeFile(filePath, content, 'utf8');
-        console.log(`Markdown has been saved to ${filePath}`);
+      const dir = path.dirname(filePath);
+      await fs.mkdir(dir, { recursive: true });
+  
+      let fileExists = false;
+      try {
+        await fs.access(filePath);
+        fileExists = true;
+      } catch (_) {
+        fileExists = false;
+      }
+  
+      if (fileExists) {
+        // 기존 파일에 2줄 개행 후 append
+        const appendContent = `\n\n${content}`;
+        await fs.appendFile(filePath, appendContent, 'utf8');
+      } else {
+        // 새 파일 작성: frontmatter + 본문
+        await fs.writeFile(filePath, `${FRONT_MATTER}${content}`, 'utf8');
+      }
+  
+      console.log(`Markdown has been saved to ${filePath}`);
     } catch (error) {
-        console.error('Error saving the Markdown file:', error);
+      console.error('Error saving the Markdown file:', error);
     }
-}
+  }
 
 // 특정 클래스명 영역만 추출하는 함수
 function extractContentByClass(htmlString, className) {
@@ -54,13 +88,22 @@ function removeElementsByClass(htmlString, classToRemove) {
 
 // 이미지 다운로드 함수
 async function downloadImage(url, filePath) {
-    const response = await fetch(url);
-    const arrayBuffer = await response.arrayBuffer();
-    const buffer = Buffer.from(arrayBuffer);
-    fs.writeFile(filePath, buffer, () => 
-      console.log(`Downloaded and saved: ${filePath}`)
-    );
-}
+    try {
+      const dir = path.dirname(filePath);
+      await fs.mkdir(dir, { recursive: true });
+  
+      const response = await fetch(url);
+      if (!response.ok) throw new Error(`Failed to fetch ${url}: ${response.statusText}`);
+  
+      const arrayBuffer = await response.arrayBuffer();
+      const buffer = Buffer.from(arrayBuffer);
+      await fs.writeFile(filePath, buffer);
+  
+      console.log(`Downloaded and saved: ${filePath}`);
+    } catch (error) {
+      console.error(`Error downloading image from ${url}`, error);
+    }
+  }
 
 function createAnchor(text) {
     return text
@@ -126,7 +169,7 @@ function convertHtmlToMarkdown(htmlString) {
             const src = node.getAttribute('src');
             const alt = node.getAttribute('alt') || 'image';
 
-            const urlObject = new URL(`https://www.egovframe.go.kr/${src}`);
+            const urlObject = new URL(`https://www.egovframe.go.kr${src}`);
             const mediaParam = urlObject.searchParams.get('media');
 
             let fileName = mediaParam ? path.basename(mediaParam) : path.basename(urlObject.pathname);
@@ -134,9 +177,10 @@ function convertHtmlToMarkdown(htmlString) {
             if(_tmp.length > 1){
                 fileName = `${_tmp[1]}-${_tmp[0]}`    
             }
+            
             downloadImage(
-                `https://www.egovframe.go.kr/${src}`,
-                `${TARGET_DIR}/egovframe-runtime/${SAVE_DIR}/images/${fileName}`
+                `https://www.egovframe.go.kr${src}`,
+                `${TARGET_DIR}/${SAVE_DIR}/images/${fileName}`
             );
             return `![${alt}](./images/${fileName})`;
         },
@@ -166,7 +210,7 @@ function convertHtmlToMarkdown(htmlString) {
                 return `[${node.textContent}](${node.getAttribute('href')})`    
             }
 
-            return `[${node.textContent}](https://www.egovframe.go.kr/${node.getAttribute('href')})`
+            return `[${node.textContent}](https://www.egovframe.go.kr${node.getAttribute('href')})`
         },
         'em' : function(content){
             return `***${content}*** `;
@@ -203,5 +247,6 @@ function convertHtmlToMarkdown(htmlString) {
     pageContent = removeElementsByClass(pageContent, 'toc'); // 'toc' 클래스 부분만 제거
 
     const markdown = convertHtmlToMarkdown(pageContent); // HTML을 Markdown으로 변환
-    await saveMarkdownToFile(`${TARGET_DIR}/egovframe-runtime/${SAVE_DIR}/${BRANCH_NAME}.md`, markdown); // Markdown 파일로 저장
+    
+    await saveMarkdownToFile(`${TARGET_DIR}/${SAVE_DIR}/${FILE_NAME}.md`, `\n\n${markdown}`); // Markdown 파일로 저장
 })();

@@ -3,15 +3,17 @@ import { Octokit } from '@octokit/rest';
 import fetch from 'node-fetch';
 import {
   TARGET_DIR,
-  BRANCH_NAME,
-  HTML_URL,
   TOKEN,
   UP_STREAM_REPO_OWNER,
   UP_STREAM_REPO_NAME,
   UP_BRANCH_OWNER,
   REPO_OWNER
-} from "./target.js";
+} from "./properties.js";
 
+import {
+  HTML_URL,
+  BRANCH_NAME
+} from "./target.js";
 // Git 및 PR 관련 상수
 const COMMIT_MESSAGE = `- ${BRANCH_NAME}.md commit`;
 const GIT_COMMAND_BASE = `git -C ${TARGET_DIR}`;

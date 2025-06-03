@@ -23,21 +23,28 @@
 ### properties.js
 
 ```js
+// Markdown 파일이 저장될 로컬 디렉토리 경로
 export const TARGET_DIR = "/Users/crlee/dev/crlee/project/egovframe-docs";
+// GitHub 인증 토큰 (개인 액세스 토큰 사용) - 중요! 실제 배포시에는 노출 주의
 export const TOKEN = "**************";
+// 오픈소스 원본 레포지토리의 소유자 (ex: eGovFramework)
 export const UP_STREAM_REPO_OWNER = "eGovFramework";
+// 오픈소스 원본 레포지토리의 이름
 export const UP_STREAM_REPO_NAME = "egovframe-docs";
+// 원본 레포지토리의 기본 브랜치 이름 (보통 'main')
 export const UP_BRANCH_OWNER = "main";
+// 내 포크된 레포지토리에서 작업할 브랜치의 기준 브랜치 (보통 'contribution' 또는 'main')
 export const BRANCH_OWNER = "contribution";
+// 내 GitHub 사용자 이름 (Pull Request 생성 시 사용됨)
 export const REPO_OWNER = "Chung10Kr";
 ```
 
-## 2. npm install
+## ⚙️ 2. npm install
 ```bash
 npm install
 ```
 
-## 3. 사용방법
+## ⚙️ 3. 실행 방법
 
 ### 3.1. 타켓 설정
 - target.js에서 대상이 되는 가이드, 저장 위치, 파일명, 설명등을 작성한다.
@@ -55,7 +62,7 @@ function setBranch(HTML_URL) {
 export const BRANCH_NAME = `${setBranch(HTML_URL)}`;
 ```
 
-### 3.2. 브랜치 설정
+### 3.2. 브랜치 생성
 ```bash
 node 01-setBranch.js
 ```

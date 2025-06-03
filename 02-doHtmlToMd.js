@@ -15,8 +15,8 @@ import {
     DESCRIPTION
   } from "./target.js";
 
-
-  const FRONT_MATTER = `---
+// Front Template 
+const FRONT_MATTER = `---
   title: ${HTML_URL.split(":").reverse()[0]}
   linkTitle: ${HTML_URL.split(":").reverse()[0]}
   description: "${DESCRIPTION}"
@@ -31,17 +31,19 @@ import {
   `;
 
 
+// 주어진 URL에서 HTML을 가져옴
 async function fetchHtml(url) {
     try {
-        const response = await fetch(url);
-        const data = await response.text(); // HTML 데이터를 텍스트로 변환
-        return data; // data를 반환
+        const response = await fetch(url);           
+        const data = await response.text();          // 응답을 텍스트(HTML)로 변환
+        return data;                                 
     } catch (error) {
         console.error('Error fetching the URL:', error);
-        return null; // 오류가 발생할 경우 null 반환
+        return null;
     }
 }
 
+// Content를 .md로 저장
 async function saveMarkdownToFile(filePath, content) {
     try {
       const dir = path.dirname(filePath);
@@ -56,11 +58,9 @@ async function saveMarkdownToFile(filePath, content) {
       }
   
       if (fileExists) {
-        // 기존 파일에 2줄 개행 후 append
         const appendContent = `\n\n${content}`;
         await fs.appendFile(filePath, appendContent, 'utf8');
       } else {
-        // 새 파일 작성: frontmatter + 본문
         await fs.writeFile(filePath, `${FRONT_MATTER}${content}`, 'utf8');
       }
   

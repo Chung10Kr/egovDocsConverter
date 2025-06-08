@@ -26,9 +26,9 @@ const FRONT_MATTER = `---
       weight: ${SAVE_DIR.split("/").length-1 }
       parent: ${SAVE_DIR.split("/").reverse()[0]}
       identifier: ${FILE_NAME}
-  ---
-  
-  `;
+---
+
+`;
 
 
 // 주어진 URL에서 HTML을 가져옴

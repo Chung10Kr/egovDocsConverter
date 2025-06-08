@@ -12,7 +12,9 @@ import {
     FILE_NAME,
     SAVE_DIR,
     HTML_URL,
-    DESCRIPTION
+    DESCRIPTION,
+    WEIGHT,
+    PARENT
   } from "./target.js";
 
 // Front Template 
@@ -20,12 +22,13 @@ const FRONT_MATTER = `---
   title: ${HTML_URL.split(":").reverse()[0]}
   linkTitle: ${HTML_URL.split(":").reverse()[0]}
   description: "${DESCRIPTION}"
-  url: ${SAVE_DIR}/${FILE_NAME}
+  url: /${SAVE_DIR}/${FILE_NAME}/
   menu:
     depth:
-      weight: ${SAVE_DIR.split("/").length-1 }
-      parent: ${SAVE_DIR.split("/").reverse()[0]}
-      identifier: ${FILE_NAME}
+      name: ${HTML_URL.split(":").reverse()[0]}
+      weight: ${WEIGHT}
+      parent: "${PARENT}"
+      identifier: "${FILE_NAME}"
 ---
 
 `;

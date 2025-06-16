@@ -14,8 +14,6 @@
 ├── properties.js          # GitHub 및 레포지토리 관련 설정
 └── README.md              # 사용 설명서
 ```
-
-
 ---
 
 ## ⚙️ 1. 사전 설정

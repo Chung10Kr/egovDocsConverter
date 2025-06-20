@@ -47,12 +47,12 @@ npm install
 ### 3.1. 타켓 설정
 - target.js에서 대상이 되는 가이드, 저장 위치, 파일명, 설명등을 작성한다.
 ```js
-export const SAVE_DIR = "common-component/user-authentication"; // docs하위 저장 위치
-export const HTML_URL = "https://www.egovframe.go.kr/wiki/doku.php?id=egovframework:com:v4.3:uat:인증서로그인"; // 복사할 가이드 URL
-export const FILE_NAME = "certificate-login"; // 파일명
-export const DESCRIPTION = "인증서로그인은 기존 GPKI 인증서 로그인과 동일한 기능을 제공한다."; // 설명
-export const WEIGHT = 1; // "사이드 네비게이션에 동일한 depth(=동일한 parent를 가진 자식)에서 정렬하는 순번"
-export const PARENT = "login"; // "부모 파일의 menu에 정의된 identifier 값"
+export const HTML_URL = "https://www.egovframe.go.kr/wiki/doku.php?id=egovframework:com:v4.3:sec:권한그룹관리"// 복사할 가이드 URL
+export const SAVE_DIR = "common-component/security";  // docs하위 저장 위치
+export const FILE_NAME = "authority-group-management" // 파일명
+export const DESCRIPTION = "권한그룹관리는 시스템 사용을 위해 사용자의 특성에 따라 그룹을 설정하고, 특정 그룹을 선택한 뒤 해당 그룹에 속한 사용자에게 일괄적으로 권한을 부여할 수 있는 관리기능을 제공한다." // 설명
+export const WEIGHT = 2; // "사이드 네비게이션에 동일한 depth(=동일한 parent를 가진 자식)에서 정렬하는 순번"
+export const PARENT = "security"; // "부모 파일의 menu에 정의된 identifier 값"
 ```
 
 ### 3.2. 브랜치 생성
@@ -74,5 +74,9 @@ node 03-setPR.js
 
 
 ## 참고
+- [AS-IS: 표준프레임워크 개발 가이드](https://www.egovframe.go.kr/wiki/doku.php?id=egovframework:com:v4.3:init_guide)
+- [TO-BE: 표준프레임워크 개발 가이드](https://egovframework.github.io/egovframe-docs/)
+- [egovframe-docs](https://github.com/eGovFramework/egovframe-docs/pulls)
+- [github actions](https://github.com/eGovFramework/egovframe-docs/actions)
 - [가이드 작성 규칙](https://github.com/eGovFramework/egovframe-docs/tree/main)
 - [Markdown Frontmatter 작성 방법](https://github.com/eGovFramework/egovframe-docs/blob/main/how-to-write-Frontmatter.md)

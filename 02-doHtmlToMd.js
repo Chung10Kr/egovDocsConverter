@@ -46,38 +46,14 @@ async function fetchHtml(url) {
     }
 }
 
-// Content를 .md로 저장
-async function saveMarkdownToFile(filePath, content) {
-    try {
-      const dir = path.dirname(filePath);
-      await fs.mkdir(dir, { recursive: true });
-  
-      let fileExists = false;
-      try {
-        await fs.access(filePath);
-        fileExists = true;
-      } catch (_) {
-        fileExists = false;
-      }
-  
-      if (fileExists) {
-        const appendContent = `\n\n${content}`;
-        await fs.appendFile(filePath, appendContent, 'utf8');
-      } else {
-        await fs.writeFile(filePath, `${FRONT_MATTER}${content}`, 'utf8');
-      }
-  
-      console.log(`Markdown has been saved to ${filePath}`);
-    } catch (error) {
-      console.error('Error saving the Markdown file:', error);
-    }
-  }
 
 // 특정 클래스명 영역만 추출하는 함수
 function extractContentByClass(htmlString, className) {
     const $ = cheerio.load(htmlString);
     return $(`.${className}`).html(); // 특정 클래스명을 가진 영역의 HTML을 반환
 }
+
+
 
 // 특정 클래스명 영역만 제거하는 함수
 function removeElementsByClass(htmlString, classToRemove) {
@@ -89,32 +65,6 @@ function removeElementsByClass(htmlString, classToRemove) {
     return $.html(); // 제거된 후의 HTML을 반환
 }
 
-// 이미지 다운로드 함수
-async function downloadImage(url, filePath) {
-    try {
-      const dir = path.dirname(filePath);
-      await fs.mkdir(dir, { recursive: true });
-  
-      const response = await fetch(url);
-      if (!response.ok) throw new Error(`Failed to fetch ${url}: ${response.statusText}`);
-  
-      const arrayBuffer = await response.arrayBuffer();
-      const buffer = Buffer.from(arrayBuffer);
-      await fs.writeFile(filePath, buffer);
-  
-      console.log(`Downloaded and saved: ${filePath}`);
-    } catch (error) {
-      console.error(`Error downloading image from ${url}`, error);
-    }
-  }
-
-function createAnchor(text) {
-    return text
-        .toLowerCase()                             // 1. 소문자로 변환
-        .replace(/\s+/g, '-')                      // 2. 공백을 하이픈으로 변환
-        .replace(/[^\w\-가-힣]/g, '')              // 3. 알파벳, 숫자, 하이픈, 한글을 제외한 모든 문자 제거
-        .replace(/\-+/g, '-');                     // 4. 연속된 하이픈을 하나의 하이픈으로 변환
-}
 
 // HTML을 Markdown으로 변환하는 함수
 function convertHtmlToMarkdown(htmlString) {
@@ -237,7 +187,63 @@ function convertHtmlToMarkdown(htmlString) {
     return turndownService.turndown(htmlString)
 }
 
-// 함수 호출 및 변수에 담기
+
+// 이미지 다운로드 함수
+async function downloadImage(url, filePath) {
+    try {
+      const dir = path.dirname(filePath);
+      await fs.mkdir(dir, { recursive: true });
+  
+      const response = await fetch(url);
+      if (!response.ok) throw new Error(`Failed to fetch ${url}: ${response.statusText}`);
+  
+      const arrayBuffer = await response.arrayBuffer();
+      const buffer = Buffer.from(arrayBuffer);
+      await fs.writeFile(filePath, buffer);
+  
+      console.log(`Downloaded and saved: ${filePath}`);
+    } catch (error) {
+      console.error(`Error downloading image from ${url}`, error);
+    }
+  }
+
+function createAnchor(text) {
+    return text
+        .toLowerCase()                             // 1. 소문자로 변환
+        .replace(/\s+/g, '-')                      // 2. 공백을 하이픈으로 변환
+        .replace(/[^\w\-가-힣]/g, '')              // 3. 알파벳, 숫자, 하이픈, 한글을 제외한 모든 문자 제거
+        .replace(/\-+/g, '-');                     // 4. 연속된 하이픈을 하나의 하이픈으로 변환
+}
+
+// Content를 .md로 저장
+async function saveMarkdownToFile(filePath, content) {
+    try {
+      const dir = path.dirname(filePath);
+      await fs.mkdir(dir, { recursive: true });
+  
+      let fileExists = false;
+      try {
+        await fs.access(filePath);
+        fileExists = true;
+      } catch (_) {
+        fileExists = false;
+      }
+  
+      if (fileExists) {
+        const appendContent = `\n\n${content}`;
+        await fs.appendFile(filePath, appendContent, 'utf8');
+      } else {
+        await fs.writeFile(filePath, `${FRONT_MATTER}${content}`, 'utf8');
+      }
+  
+      console.log(`Markdown has been saved to ${filePath}`);
+    } catch (error) {
+      console.error('Error saving the Markdown file:', error);
+    }
+  }
+
+
+
 (async () => {
     const htmlData = await fetchHtml(HTML_URL);
 

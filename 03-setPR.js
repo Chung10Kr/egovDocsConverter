@@ -12,14 +12,38 @@ import {
 
 import {
   HTML_URL,
-  BRANCH_NAME
+  BRANCH_NAME,
+  SAVE_DIR,
+  FILE_NAME,
+  DESCRIPTION
 } from "./target.js";
+import { FILE } from 'dns';
 // Git 및 PR 관련 상수
 const COMMIT_MESSAGE = `- ${BRANCH_NAME}.md commit`;
 const GIT_COMMAND_BASE = `git -C ${TARGET_DIR}`;
 const GITHUB_AUTH_TOKEN = TOKEN;
 const PR_TITLE = `${BRANCH_NAME} 가이드 변환`;
-const PR_BODY = `[${BRANCH_NAME}](${HTML_URL}) 가이드 변환`;
+const PR_BODY = `
+## 📘 PR 요약
+- [${BRANCH_NAME}](${HTML_URL}) 가이드 변환
+- ${DESCRIPTION}
+
+## ✏️ 변경된 내용
+
+- [X] 🆕 신규 문서 추가
+    - ${SAVE_DIR}/${FILE_NAME}.md
+
+## ✅ 체크리스트
+- [X] Push 전에 Pull을 반드시 했는지 확인
+- [X] 개발환경, 실행환경, 실행환경 예제, 공통컴포넌트 디렉토리 내 변경만 포함되었는지 확인
+- [X] frontmatter의 url, menu 등 검토
+- [X] 오탈자 및 맞춤법 검토
+- [X] 이미지 및 링크 경로 검토
+
+## 👀 특이사항
+- N/A
+
+`;
 
 // GitHub API 클라이언트 설정
 const octokit = new Octokit({
@@ -68,13 +92,12 @@ async function createPullRequest() {
   }
 }
 
-// 메인 실행 함수
-function main() {
-  console.log(`Starting process on branch '${BRANCH_NAME}' in directory '${TARGET_DIR}'`);
 
+
+
+(async () => {
+  console.log(`Starting process on branch '${BRANCH_NAME}' in directory '${TARGET_DIR}'`);
   commitChanges();
   pushChanges();
   createPullRequest();
-}
-
-main();
+})();

@@ -1,9 +1,9 @@
-export const HTML_URL = "https://www.egovframe.go.kr/wiki/doku.php?id=egovframework:com:v4.3:sec:부서권한관리"
-export const SAVE_DIR = "common-component/security";
-export const FILE_NAME = "department-role-management";
-export const DESCRIPTION = "부서권한관리는 시스템 사용을 위해 사용자에게 권한을 부여할 경우 사용자가 업무담당자에 한해서 부서별로 사용자에게 일괄 권한을 부여하는 기능을 제공한다.";
-export const WEIGHT = 5;
-export const PARENT = "security";
+export const HTML_URL = "https://www.egovframe.go.kr/wiki/doku.php?id=egovframework:com:v4.3:sts:사용자통계"
+export const SAVE_DIR = "common-component/statistics-reporting";
+export const FILE_NAME = "user_statistics";
+export const DESCRIPTION = "사용자통계 기능은 각종 사용자 현황에 대한 통계자료를 회원유형, 회원상태, 성별에 따라 기간별(연도별, 월별, 일별)로 그래프와 텍스트 형태 두가지 방식으로 제공한다.";
+export const WEIGHT = 2;
+export const PARENT = "statistics-reporting";
 
 
 function setBranch(HTML_URL){

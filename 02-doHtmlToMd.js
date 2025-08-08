@@ -144,7 +144,7 @@ function convertHtmlToMarkdown(htmlString) {
             
             let arr = [
                 "String","Long","Integer","Object","Date","Exception",
-                "Environment","URL","Cache","Element","File"
+                "Environment","URL","Cache","Element","File","Double","Locale","StringBuffer","System"
             ]
             if( arr.some( str => str == content) ){
                 return content

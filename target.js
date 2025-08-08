@@ -1,9 +1,9 @@
-export const HTML_URL = "https://www.egovframe.go.kr/wiki/doku.php?id=egovframework:com:v4.3:sts:사용자통계"
-export const SAVE_DIR = "common-component/statistics-reporting";
-export const FILE_NAME = "user_statistics";
-export const DESCRIPTION = "사용자통계 기능은 각종 사용자 현황에 대한 통계자료를 회원유형, 회원상태, 성별에 따라 기간별(연도별, 월별, 일별)로 그래프와 텍스트 형태 두가지 방식으로 제공한다.";
-export const WEIGHT = 2;
-export const PARENT = "statistics-reporting";
+export const HTML_URL = "https://www.egovframe.go.kr/wiki/doku.php?id=egovframework:com:v3:cmm:showmodaldialog"
+export const SAVE_DIR = "common-component/elementary-technology";
+export const FILE_NAME = "showmodaldialog";
+export const DESCRIPTION = "다국어 지원을 위한 국가간 날짜 표시 변환 기능을 제공한다.";
+export const WEIGHT = 5;
+export const PARENT = "new-components-v3.2";
 
 
 function setBranch(HTML_URL){
